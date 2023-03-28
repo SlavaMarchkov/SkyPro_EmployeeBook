@@ -2,6 +2,8 @@ package pro.sky.employeebook.services;
 
 import pro.sky.employeebook.domain.Employee;
 
+import java.util.List;
+
 public interface EmployeeService {
     Employee addEmployee(String firstName, String lastName);
 
@@ -9,5 +11,5 @@ public interface EmployeeService {
 
     Employee findEmployee(String firstName, String lastName);
 
-    String printEmployees();
+    List<Employee> printEmployees();
 }

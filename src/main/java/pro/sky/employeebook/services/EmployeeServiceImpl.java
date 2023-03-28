@@ -4,68 +4,45 @@ import org.springframework.stereotype.Service;
 import pro.sky.employeebook.domain.Employee;
 import pro.sky.employeebook.exceptions.EmployeeAlreadyAddedException;
 import pro.sky.employeebook.exceptions.EmployeeNotFoundException;
-import pro.sky.employeebook.exceptions.EmployeeStorageIsFullException;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    private static final int SIZE = 3;
-    private final Employee[] employees;
-    private int count = 0;
-
-    public EmployeeServiceImpl() {
-        this.employees = new Employee[SIZE];
-    }
+    List<Employee> employees = new ArrayList<>();
 
     @Override
     public Employee addEmployee(String firstName, String lastName) {
-        if (count >= employees.length) {
-            throw new EmployeeStorageIsFullException();
-        }
-
         Employee employee = new Employee(firstName, lastName);
-
-        for (int i = 0; i < employees.length; i++) {
-            if (employees[i] != null && employees[i].equals(employee)) {
-                throw new EmployeeAlreadyAddedException();
-            }
-            if (employees[i] == null) {
-                employees[i] = employee;
-                count++;
-                return employee;
-            }
+        if (employees.contains(employee)) {
+            throw new EmployeeAlreadyAddedException();
         }
-
-        return null;
+        employees.add(employee);
+        return employee;
     }
 
     @Override
     public Employee removeEmployee(String firstName, String lastName) {
         Employee employee = new Employee(firstName, lastName);
-        for (int i = 0; i < employees.length; i++) {
-            if (employees[i] != null && employees[i].equals(employee)) {
-                employees[i] = null;
-                count--;
-                return employee;
-            }
+        if (employees.contains(employee)) {
+            employees.remove(employee);
+            return employee;
         }
         throw new EmployeeNotFoundException();
     }
 
     @Override
     public Employee findEmployee(String firstName, String lastName) {
-        Employee emp = new Employee(firstName, lastName);
-        for (Employee employee : employees) {
-            if (employee != null && employee.equals(emp)) {
-                return employee;
-            }
+        Employee employee = new Employee(firstName, lastName);
+        if (employees.contains(employee)) {
+            return employee;
         }
         throw new EmployeeNotFoundException();
     }
 
     @Override
-    public String printEmployees() {
-        return Arrays.toString(employees);
+    public List<Employee> printEmployees() {
+        return employees;
     }
 }

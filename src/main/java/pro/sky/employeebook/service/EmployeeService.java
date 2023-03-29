@@ -1,6 +1,6 @@
-package pro.sky.employeebook.services;
+package pro.sky.employeebook.service;
 
-import pro.sky.employeebook.domain.Employee;
+import pro.sky.employeebook.model.Employee;
 
 public interface EmployeeService {
     Employee addEmployee(String firstName, String lastName);

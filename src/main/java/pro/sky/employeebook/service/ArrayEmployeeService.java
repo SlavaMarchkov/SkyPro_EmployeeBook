@@ -1,20 +1,20 @@
-package pro.sky.employeebook.services;
+package pro.sky.employeebook.service;
 
 import org.springframework.stereotype.Service;
-import pro.sky.employeebook.domain.Employee;
-import pro.sky.employeebook.exceptions.EmployeeAlreadyAddedException;
-import pro.sky.employeebook.exceptions.EmployeeNotFoundException;
-import pro.sky.employeebook.exceptions.EmployeeStorageIsFullException;
+import pro.sky.employeebook.model.Employee;
+import pro.sky.employeebook.exception.EmployeeAlreadyAddedException;
+import pro.sky.employeebook.exception.EmployeeNotFoundException;
+import pro.sky.employeebook.exception.EmployeeStorageIsFullException;
 
 import java.util.Arrays;
 
 @Service
-public class EmployeeServiceImpl implements EmployeeService {
+public class ArrayEmployeeService implements EmployeeService {
     private static final int SIZE = 3;
     private final Employee[] employees;
     private int count = 0;
 
-    public EmployeeServiceImpl() {
+    public ArrayEmployeeService() {
         this.employees = new Employee[SIZE];
     }
 
@@ -64,7 +64,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         throw new EmployeeNotFoundException();
     }
 
-    @Override
     public String printEmployees() {
         return Arrays.toString(employees);
     }

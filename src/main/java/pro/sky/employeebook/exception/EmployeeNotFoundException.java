@@ -1,8 +1,9 @@
 package pro.sky.employeebook.exception;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus()
+@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "not found")
 public class EmployeeNotFoundException extends RuntimeException {
     /**
      * Constructs a new runtime exception with {@code null} as its

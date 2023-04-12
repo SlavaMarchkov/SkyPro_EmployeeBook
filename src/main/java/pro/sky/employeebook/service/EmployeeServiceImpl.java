@@ -11,16 +11,20 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class ListEmployeeService implements EmployeeService {
+public class EmployeeServiceImpl implements EmployeeService {
     private final List<Employee> employeeList;
 
-    public ListEmployeeService() {
+    public EmployeeServiceImpl() {
         this.employeeList = new ArrayList<>();
     }
 
     @Override
-    public Employee addEmployee(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
+    public Employee addEmployee(String firstName,
+                                String lastName,
+                                int salary,
+                                int departmentId
+    ) {
+        Employee employee = new Employee(firstName, lastName, salary, departmentId);
         if (employeeList.contains(employee)) {
             throw new EmployeeAlreadyAddedException("Employee " + firstName + " " + lastName + " Has Already Been Added");
         }

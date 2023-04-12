@@ -46,6 +46,16 @@ public class EmployeeController {
         return service.findEmployee(firstName, lastName);
     }
 
+    @GetMapping(path = "/max-salary")
+    public Employee getEmployeeWithMaxSalary() {
+        return service.getEmployeeWithMaxSalary();
+    }
+
+    @GetMapping(path = "/min-salary")
+    public Employee getEmployeeWithMinSalary() {
+        return service.getEmployeeWithMinSalary();
+    }
+
     @ExceptionHandler(EmployeeNotFoundException.class)
     public String handleNotFoundException(EmployeeNotFoundException e) {
         return e.getMessage();

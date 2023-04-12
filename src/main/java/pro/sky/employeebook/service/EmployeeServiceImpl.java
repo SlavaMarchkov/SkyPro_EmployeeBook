@@ -5,17 +5,14 @@ import pro.sky.employeebook.model.Employee;
 import pro.sky.employeebook.exception.EmployeeAlreadyAddedException;
 import pro.sky.employeebook.exception.EmployeeNotFoundException;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    private final List<Employee> employeeList;
+    private final List<Employee> employees;
 
     public EmployeeServiceImpl() {
-        this.employeeList = new ArrayList<>();
+        this.employees = new ArrayList<>();
     }
 
     @Override
@@ -25,18 +22,18 @@ public class EmployeeServiceImpl implements EmployeeService {
                                 int departmentId
     ) {
         Employee employee = new Employee(firstName, lastName, salary, departmentId);
-        if (employeeList.contains(employee)) {
+        if (employees.contains(employee)) {
             throw new EmployeeAlreadyAddedException("Employee " + firstName + " " + lastName + " Has Already Been Added");
         }
-        employeeList.add(employee);
+        employees.add(employee);
         return employee;
     }
 
     @Override
     public Employee removeEmployee(String firstName, String lastName) {
         Employee employee = new Employee(firstName, lastName);
-        if (employeeList.contains(employee)) {
-            employeeList.remove(employee);
+        if (employees.contains(employee)) {
+            employees.remove(employee);
             return employee;
         }
         throw new EmployeeNotFoundException("Employee " + firstName + " " + lastName + " Not Found");
@@ -45,14 +42,39 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee findEmployee(String firstName, String lastName) {
         Employee employee = new Employee(firstName, lastName);
-        if (employeeList.contains(employee)) {
+        if (employees.contains(employee)) {
             return employee;
         }
         throw new EmployeeNotFoundException("Employee " + firstName + " " + lastName + " Not Found");
     }
 
     public Collection<Employee> printEmployees() {
-//        return new ArrayList<>(employeeList);
-        return Collections.unmodifiableList(employeeList);
+        return Collections.unmodifiableList(employees);
+    }
+
+    @Override
+    public Employee getEmployeeWithMaxSalary() {
+        return getEmployeeWithMaxSalary(employees);
+    }
+
+    private Employee getEmployeeWithMaxSalary(List<Employee> employees) {
+        final Optional<Employee> employee = employees
+                .stream()
+                .max(Comparator.comparingInt(emp -> emp.getSalary()));
+
+        return employee.orElseThrow(() -> new RuntimeException("Employee with max salary not found"));
+    }
+
+    @Override
+    public Employee getEmployeeWithMinSalary() {
+        return getEmployeeWithMinSalary(employees);
+    }
+
+    private Employee getEmployeeWithMinSalary(List<Employee> employees) {
+        final Optional<Employee> employee = employees
+                .stream()
+                .min(Comparator.comparingInt(emp -> emp.getSalary()));
+
+        return employee.orElseThrow(() -> new RuntimeException("Employee with min salary not found"));
     }
 }

@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pro.sky.employeebook.model.Employee;
 import pro.sky.employeebook.service.DepartmentService;
-import pro.sky.employeebook.service.EmployeeService;
+
+import java.util.Collection;
 
 @RestController
 @RequestMapping(path = "/departments")
@@ -20,5 +21,17 @@ public class DepartmentsController {
     @GetMapping(path = "/max-salary")
     public Employee getEmployeeWithMaxSalaryByDepartment(@RequestParam("departmentId") int departmentId) {
         return service.getEmployeeWithMaxSalary(departmentId);
+    }
+
+    @GetMapping(path = "/min-salary")
+    public Employee getEmployeeWithMinSalaryByDepartment(@RequestParam("departmentId") int departmentId) {
+        return service.getEmployeeWithMinSalary(departmentId);
+    }
+
+    @GetMapping(path = "/all")
+    public Collection<Employee> getAllEmployeesByDepartment(@RequestParam(value = "departmentId", required = false) Integer departmentId) {
+        return departmentId != null
+                ? service.getAllEmployeesByDepartment(departmentId)
+                : service.getAllEmployees();
     }
 }

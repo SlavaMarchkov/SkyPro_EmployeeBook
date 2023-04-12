@@ -3,6 +3,7 @@ package pro.sky.employeebook.service;
 import pro.sky.employeebook.model.Employee;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface EmployeeService {
     Employee addEmployee(String firstName, String lastName, int salary, int departmentId);
@@ -16,4 +17,6 @@ public interface EmployeeService {
     Employee getEmployeeWithMaxSalary();
 
     Employee getEmployeeWithMinSalary();
+
+    List<Employee> getEmployees();
 }

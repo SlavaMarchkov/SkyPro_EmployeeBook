@@ -52,6 +52,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         return Collections.unmodifiableList(employees);
     }
 
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
     @Override
     public Employee getEmployeeWithMaxSalary() {
         return getEmployeeWithMaxSalary(employees);

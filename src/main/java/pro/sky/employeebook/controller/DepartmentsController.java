@@ -8,6 +8,8 @@ import pro.sky.employeebook.model.Employee;
 import pro.sky.employeebook.service.DepartmentService;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/departments")
@@ -29,9 +31,12 @@ public class DepartmentsController {
     }
 
     @GetMapping(path = "/all")
-    public Collection<Employee> getAllEmployeesByDepartment(@RequestParam(value = "departmentId", required = false) Integer departmentId) {
-        return departmentId != null
-                ? service.getAllEmployeesByDepartment(departmentId)
-                : service.getAllEmployees();
+    public Map<Integer, List<Employee>> getAllEmployees() {
+        return service.getAllEmployees();
+    }
+
+    @GetMapping(path = "/all", params = "departmentId")
+    public Collection<Employee> getAllEmployeesByDepartment(@RequestParam(value = "departmentId") Integer departmentId) {
+        return service.getAllEmployeesByDepartment(departmentId);
     }
 }

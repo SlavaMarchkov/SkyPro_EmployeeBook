@@ -1,11 +1,17 @@
 package pro.sky.employeebook.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class Employee {
+    @JsonProperty("firstName")
     private final String firstName;
+    @JsonProperty("lastName")
     private final String lastName;
+    @JsonProperty("salary")
     private int salary; // зарплата
+    @JsonProperty("departmentId")
     private int departmentId; // отдел
 
     public Employee(String firstName, String lastName) {
@@ -33,6 +39,10 @@ public class Employee {
 
     public int getDepartmentId() {
         return departmentId;
+    }
+
+    public void setSalary(final int salary) {
+        this.salary = Math.max(salary, 0);
     }
 
     @Override

@@ -19,4 +19,8 @@ public interface EmployeeService {
     Employee getEmployeeWithMinSalary();
 
     List<Employee> getEmployees();
+
+    Employee setSalary(String firstName, String lastName, int salary);
+
+    int calcTotalMonthlySalary();
 }

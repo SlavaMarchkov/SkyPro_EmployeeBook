@@ -33,17 +33,24 @@ public class EmployeeController {
 
     @GetMapping(path = "/remove")
     public Employee removeEmployee(@RequestParam("firstName") String firstName,
-                                   @RequestParam("lastName") String lastName
+                                             @RequestParam("lastName") String lastName
     ) {
         return service.removeEmployee(firstName, lastName);
     }
 
     @GetMapping(path = "/find")
     public Employee findEmployee(@RequestParam("firstName") String firstName,
-                                 @RequestParam("lastName") String lastName
+                                           @RequestParam("lastName") String lastName
     ) {
-
         return service.findEmployee(firstName, lastName);
+    }
+
+    @GetMapping(path = "/set-salary")
+    public Employee setSalary(@RequestParam("firstName") String firstName,
+                                        @RequestParam("lastName") String lastName,
+                                        @RequestParam("salary") int salary
+    ) {
+        return service.setSalary(firstName, lastName, salary);
     }
 
     @GetMapping(path = "/max-salary")
@@ -54,6 +61,11 @@ public class EmployeeController {
     @GetMapping(path = "/min-salary")
     public Employee getEmployeeWithMinSalary() {
         return service.getEmployeeWithMinSalary();
+    }
+
+    @GetMapping(path = "/total-salary")
+    public int calcTotalMonthlySalary() {
+        return service.calcTotalMonthlySalary();
     }
 
     @ExceptionHandler(EmployeeNotFoundException.class)

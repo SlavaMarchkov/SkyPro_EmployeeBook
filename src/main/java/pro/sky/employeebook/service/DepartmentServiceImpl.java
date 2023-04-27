@@ -9,45 +9,43 @@ import java.util.stream.Collectors;
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
 
-    private final List<Employee> employees;
+    private final EmployeeService employeeService;
 
-    public DepartmentServiceImpl(EmployeeService employeeService) {
-        this.employees = employeeService.getEmployees();
+    public DepartmentServiceImpl(final EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
-
 
     @Override
     public Employee getEmployeeWithMaxSalary(int departmentId) {
-        final Optional<Employee> employee = employees
+        final Optional<Employee> employee = employeeService.getEmployees()
                 .stream()
                 .filter(emp -> emp.getDepartmentId() == departmentId)
-                .max(Comparator.comparingInt(emp -> emp.getSalary()));
+                .max(Comparator.comparingInt(Employee::getSalary));
 
         return employee.orElseThrow(() -> new RuntimeException("Employee with max salary in department " + departmentId + " not found"));
     }
 
     @Override
     public Employee getEmployeeWithMinSalary(int departmentId) {
-        final Optional<Employee> employee = employees
+        final Optional<Employee> employee = employeeService.getEmployees()
                 .stream()
                 .filter(emp -> emp.getDepartmentId() == departmentId)
-                .min(Comparator.comparingInt(emp -> emp.getSalary()));
+                .min(Comparator.comparingInt(Employee::getSalary));
 
         return employee.orElseThrow(() -> new RuntimeException("Employee with min salary in department " + departmentId + " not found"));
     }
 
     @Override
     public Collection<Employee> getAllEmployeesByDepartment(int departmentId) {
-        return employees
+        return employeeService.getEmployees()
                 .stream()
-                .filter(emp -> emp.getDepartmentId() == departmentId)
+                .filter(employee -> employee.getDepartmentId() == departmentId)
                 .collect(Collectors.toList());
     }
 
-    public Collection<Employee> getAllEmployees() {
-        return employees
+    public Map<Integer, List<Employee>> getAllEmployees() {
+        return employeeService.getEmployees()
                 .stream()
-                .sorted(Comparator.comparingInt(Employee::getDepartmentId))
-                .collect(Collectors.toList());
+                .collect(Collectors.groupingBy(Employee::getDepartmentId));
     }
 }

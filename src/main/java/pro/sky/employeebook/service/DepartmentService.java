@@ -3,6 +3,8 @@ package pro.sky.employeebook.service;
 import pro.sky.employeebook.model.Employee;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 public interface DepartmentService {
     Employee getEmployeeWithMaxSalary(int departmentId);
@@ -11,5 +13,5 @@ public interface DepartmentService {
 
     Collection<Employee> getAllEmployeesByDepartment(int departmentId);
 
-    Collection<Employee> getAllEmployees();
+    Map<Integer, List<Employee>> getAllEmployees();
 }

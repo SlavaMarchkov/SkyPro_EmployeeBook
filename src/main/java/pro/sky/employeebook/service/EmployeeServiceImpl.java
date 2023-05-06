@@ -1,14 +1,15 @@
 package pro.sky.employeebook.service;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import pro.sky.employeebook.exception.EmployeeAlreadyAddedException;
 import pro.sky.employeebook.exception.EmployeeNotFoundException;
 import pro.sky.employeebook.exception.EmployeeStorageIsFullException;
-import pro.sky.employeebook.exception.NotAllowedSymbolsException;
+import pro.sky.employeebook.exception.InvalidInputException;
 import pro.sky.employeebook.model.Employee;
 
 import java.util.*;
+
+import static org.apache.commons.lang3.StringUtils.isAlpha;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -25,11 +26,12 @@ public class EmployeeServiceImpl implements EmployeeService {
                                 int salary,
                                 int departmentId
     ) {
-        String fName = processString(firstName);
-        String lName = processString(lastName);
-        Employee employee = new Employee(fName, lName, salary, departmentId);
+
+        validateInput(firstName, lastName);
+
+        Employee employee = new Employee(firstName, lastName, salary, departmentId);
         if (employees.contains(employee)) {
-            throw new EmployeeAlreadyAddedException("Employee " + fName + " " + lName + " Has Already Been Added");
+            throw new EmployeeAlreadyAddedException("Employee " + firstName + " " + lastName + " Has Already Been Added");
         }
         if (employees.size() < LIMIT) {
             employees.add(employee);
@@ -38,18 +40,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         throw new EmployeeStorageIsFullException();
     }
 
-    // проверка строки через StringUtils
-    private static String processString(final String str) {
-        if (!StringUtils.isAlphaSpace(str) || StringUtils.isBlank(str)) {
-            throw new NotAllowedSymbolsException("Фамилия и Имя могут содержать только буквы!");
-        }
-        String s = StringUtils.trim(str);
-        s = StringUtils.toRootLowerCase(s);
-        return StringUtils.capitalize(s);
-    }
-
     @Override
     public Employee removeEmployee(String firstName, String lastName) {
+
+        validateInput(firstName, lastName);
+
         Employee employee = employees
                 .stream()
                 .filter(emp -> Objects.equals(firstName, emp.getFirstName()) && Objects.equals(lastName, emp.getLastName()))
@@ -63,6 +58,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee findEmployee(String firstName, String lastName) {
+
+        validateInput(firstName, lastName);
+
         final Optional<Employee> employee = employees
                 .stream()
                 .filter(emp -> Objects.equals(firstName, emp.getFirstName()) && Objects.equals(lastName, emp.getLastName()))
@@ -81,6 +79,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee setSalary(final String firstName, final String lastName, final int salary) {
+
+        validateInput(firstName, lastName);
+
         final Optional<Employee> employee = employees
                 .stream()
                 .filter(emp -> Objects.equals(firstName, emp.getFirstName()) && Objects.equals(lastName, emp.getLastName()))
@@ -123,5 +124,12 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .min(Comparator.comparingInt(Employee::getSalary));
 
         return employee.orElseThrow(() -> new RuntimeException("Employee with min salary not found"));
+    }
+
+    private boolean validateInput(final String firstName, final String lastName) {
+        if (!isAlpha(firstName) || !isAlpha(lastName)) {
+            throw new InvalidInputException("Фамилия и Имя могут содержать только буквы!");
+        }
+        return false;
     }
 }

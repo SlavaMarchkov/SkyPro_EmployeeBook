@@ -23,7 +23,7 @@ GET http://localhost:8080/employee/add?firstName=шvan&lastName=IККККnov&sal
 Accept: application/json
 
 ### Add Petr Petrov Dprt1
-GET http://localhost:8080/employee/add?firstName= FrFFFdd &lastName=pETRov&salary=45000&departmentId=3
+GET http://localhost:8080/employee/add?firstName=   &lastName=pETRov&salary=45000&departmentId=3
 Accept: application/json
 
 ### Add Sidor Sidorov Dprt1
@@ -35,7 +35,7 @@ GET http://localhost:8080/employee/find?firstName=Sidor&lastName=Sidorov
 Accept: application/json
 
 ### Set salary - Sidor Sidorov
-GET http://localhost:8080/employee/set-salary?firstName=Sidor&lastName=Sidorov&salary=55000
+GET http://localhost:8080/employee/set-salary?firstName=sidor&lastName=sidoRov&salary=55000
 Accept: application/json
 
 ### Remove by fullname

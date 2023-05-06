@@ -1,6 +1,7 @@
 package pro.sky.employeebook.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
 
@@ -15,8 +16,8 @@ public class Employee {
     private int departmentId; // отдел
 
     public Employee(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstName = StringUtils.capitalize(firstName.trim().toLowerCase());
+        this.lastName = StringUtils.capitalize(lastName.trim().toLowerCase());
     }
 
     public Employee(String firstName, String lastName, int salary, int departmentId) {

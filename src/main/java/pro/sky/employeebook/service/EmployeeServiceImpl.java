@@ -4,9 +4,12 @@ import org.springframework.stereotype.Service;
 import pro.sky.employeebook.exception.EmployeeAlreadyAddedException;
 import pro.sky.employeebook.exception.EmployeeNotFoundException;
 import pro.sky.employeebook.exception.EmployeeStorageIsFullException;
+import pro.sky.employeebook.exception.InvalidInputException;
 import pro.sky.employeebook.model.Employee;
 
 import java.util.*;
+
+import static org.apache.commons.lang3.StringUtils.isAlpha;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -23,6 +26,9 @@ public class EmployeeServiceImpl implements EmployeeService {
                                 int salary,
                                 int departmentId
     ) {
+
+        validateInput(firstName, lastName);
+
         Employee employee = new Employee(firstName, lastName, salary, departmentId);
         if (employees.contains(employee)) {
             throw new EmployeeAlreadyAddedException("Employee " + firstName + " " + lastName + " Has Already Been Added");
@@ -36,6 +42,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee removeEmployee(String firstName, String lastName) {
+
+        validateInput(firstName, lastName);
+
         Employee employee = employees
                 .stream()
                 .filter(emp -> Objects.equals(firstName, emp.getFirstName()) && Objects.equals(lastName, emp.getLastName()))
@@ -49,6 +58,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee findEmployee(String firstName, String lastName) {
+
+        validateInput(firstName, lastName);
+
         final Optional<Employee> employee = employees
                 .stream()
                 .filter(emp -> Objects.equals(firstName, emp.getFirstName()) && Objects.equals(lastName, emp.getLastName()))
@@ -67,6 +79,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee setSalary(final String firstName, final String lastName, final int salary) {
+
+        validateInput(firstName, lastName);
+
         final Optional<Employee> employee = employees
                 .stream()
                 .filter(emp -> Objects.equals(firstName, emp.getFirstName()) && Objects.equals(lastName, emp.getLastName()))
@@ -109,5 +124,12 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .min(Comparator.comparingInt(Employee::getSalary));
 
         return employee.orElseThrow(() -> new RuntimeException("Employee with min salary not found"));
+    }
+
+    private boolean validateInput(final String firstName, final String lastName) {
+        if (!isAlpha(firstName) || !isAlpha(lastName)) {
+            throw new InvalidInputException("Фамилия и Имя могут содержать только буквы!");
+        }
+        return false;
     }
 }

@@ -1,8 +1,11 @@
 package pro.sky.employeebook.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pro.sky.employeebook.exception.EmployeeAlreadyAddedException;
 import pro.sky.employeebook.exception.EmployeeNotFoundException;
+import pro.sky.employeebook.exception.InvalidNameException;
+import pro.sky.employeebook.exception.InvalidSurnameException;
 import pro.sky.employeebook.model.Employee;
 import pro.sky.employeebook.service.EmployeeService;
 
@@ -77,4 +80,17 @@ public class EmployeeController {
     public String handleAlreadyAddedException(EmployeeAlreadyAddedException e) {
         return e.getMessage();
     }
+
+    @ExceptionHandler({InvalidNameException.class})
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public String handleInvalidNameException(InvalidNameException e) {
+        return "Имя '%s' должно содержать только буквы!" . formatted(e.getMessage());
+    }
+
+    @ExceptionHandler({InvalidSurnameException.class})
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public String handleInvalidSurnameException(InvalidSurnameException e) {
+        return "Фамилия '%s' должна содержать только буквы!" . formatted(e.getMessage());
+    }
+
 }

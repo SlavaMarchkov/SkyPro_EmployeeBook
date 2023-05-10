@@ -19,7 +19,7 @@ GET http://localhost:8080/employee/total-salary
 Accept: application/json
 
 ### Add Ivan Ivanov Dprt1
-GET http://localhost:8080/employee/add?firstName=шvan&lastName=IККККnov&salary=25000&departmentId=2
+GET http://localhost:8080/employee/add?firstName=ivan&lastName=маМин-сибирЯК&salary=25000&departmentId=2
 Accept: application/json
 
 ### Add Petr Petrov Dprt1
@@ -27,7 +27,7 @@ GET http://localhost:8080/employee/add?firstName=   &lastName=pETRov&salary=4500
 Accept: application/json
 
 ### Add Sidor Sidorov Dprt1
-GET http://localhost:8080/employee/add?firstName=SIDOR&lastName=  sidoROV   &salary=45000&departmentId=1
+GET http://localhost:8080/employee/add?firstName=SIDOR&lastName=  2sidoROV   &salary=45000&departmentId=1
 Accept: application/json
 
 ### Find Sidor Sidorov

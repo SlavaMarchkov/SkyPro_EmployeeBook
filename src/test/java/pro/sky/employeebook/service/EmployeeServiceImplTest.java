@@ -4,6 +4,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import pro.sky.employeebook.exception.EmployeeAlreadyAddedException;
 import pro.sky.employeebook.exception.EmployeeNotFoundException;
 import pro.sky.employeebook.model.Employee;
@@ -15,28 +19,32 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static pro.sky.employeebook.constants.EmployeeConstants.*;
 
+@ExtendWith(MockitoExtension.class)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class EmployeeServiceImplTest {
 
+    @Mock
     private EmployeeService employeeService;
+    @InjectMocks
+    private ValidatorService validatorService;
 
     @BeforeEach
     void setUp() {
-        employeeService = new EmployeeServiceImpl();
+        employeeService = new EmployeeServiceImpl(validatorService);
 
-        employeeService.addEmployee(FIRST_NAME_1, LAST_NAME_1, SALARY_1, DEPARTMENT);
-        employeeService.addEmployee(FIRST_NAME_2, LAST_NAME_2, SALARY_2, DEPARTMENT);
-        employeeService.addEmployee(FIRST_NAME_3, LAST_NAME_3, SALARY_3, DEPARTMENT);
+        employeeService.addEmployee(FIRST_NAME_1, LAST_NAME_1, SALARY_1, DEPARTMENT_1);
+        employeeService.addEmployee(FIRST_NAME_2, LAST_NAME_2, SALARY_2, DEPARTMENT_2);
+        employeeService.addEmployee(FIRST_NAME_3, LAST_NAME_3, SALARY_3, DEPARTMENT_3);
     }
 
     @Test
     void Should_return_not_null_when_employee_added() {
-        assertNotNull(employeeService.addEmployee(NEW_PERSON_NAME, NEW_PERSON_LAST_NAME, SALARY_2, DEPARTMENT));
+        assertNotNull(employeeService.addEmployee(NEW_PERSON_NAME, NEW_PERSON_LAST_NAME, SALARY_2, DEPARTMENT_2));
     }
 
     @Test
     void Should_throw_exception_when_added_employee_exists() {
-        assertThrows(EmployeeAlreadyAddedException.class, () -> employeeService.addEmployee(FIRST_NAME_1, LAST_NAME_1, SALARY_1, DEPARTMENT));
+        assertThrows(EmployeeAlreadyAddedException.class, () -> employeeService.addEmployee(FIRST_NAME_1, LAST_NAME_1, SALARY_1, DEPARTMENT_1));
     }
 
     @Test
@@ -87,7 +95,7 @@ public class EmployeeServiceImplTest {
     @Test
     void Should_calc_total_monthly_salary() {
         Number expected = employeeService.calcTotalMonthlySalary();
-        assertNotNull(expected);
+        assertEquals(expected, TOTAL_SALARY);
     }
 
     @Test

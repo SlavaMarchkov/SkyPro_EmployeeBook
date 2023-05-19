@@ -1,6 +1,8 @@
 package pro.sky.employeebook.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pro.sky.employeebook.exception.EmployeeNotFoundException;
 import pro.sky.employeebook.model.Employee;
 
 import java.util.*;
@@ -11,32 +13,35 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     private final EmployeeService employeeService;
 
+    @Autowired
     public DepartmentServiceImpl(final EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
 
     @Override
-    public Employee getEmployeeWithMaxSalary(int departmentId) {
-        final Optional<Employee> employee = employeeService.getEmployees()
+    public Number getMaxSalary(final int departmentId) {
+        final Employee employee = employeeService.getEmployees()
                 .stream()
                 .filter(emp -> emp.getDepartmentId() == departmentId)
-                .max(Comparator.comparingInt(Employee::getSalary));
+                .max(Comparator.comparingInt(Employee::getSalary))
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee with max salary in department " + departmentId + " not found"));
 
-        return employee.orElseThrow(() -> new RuntimeException("Employee with max salary in department " + departmentId + " not found"));
+        return employee.getSalary();
     }
 
     @Override
-    public Employee getEmployeeWithMinSalary(int departmentId) {
-        final Optional<Employee> employee = employeeService.getEmployees()
+    public Number getMinSalary(final int departmentId) {
+        final Employee employee = employeeService.getEmployees()
                 .stream()
                 .filter(emp -> emp.getDepartmentId() == departmentId)
-                .min(Comparator.comparingInt(Employee::getSalary));
+                .min(Comparator.comparingInt(Employee::getSalary))
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee with min salary in department " + departmentId + " not found"));
 
-        return employee.orElseThrow(() -> new RuntimeException("Employee with min salary in department " + departmentId + " not found"));
+        return employee.getSalary();
     }
 
     @Override
-    public Collection<Employee> getAllEmployeesByDepartment(int departmentId) {
+    public Collection<Employee> getAllEmployeesByDepartment(final int departmentId) {
         return employeeService.getEmployees()
                 .stream()
                 .filter(employee -> employee.getDepartmentId() == departmentId)
@@ -48,4 +53,14 @@ public class DepartmentServiceImpl implements DepartmentService {
                 .stream()
                 .collect(Collectors.groupingBy(Employee::getDepartmentId));
     }
+
+    @Override
+    public Number calcTotalSalaryByDepartment(final int departmentId) {
+        return employeeService.getEmployees()
+                .stream()
+                .filter(employee -> employee.getDepartmentId() == departmentId)
+                .mapToInt(Employee::getSalary)
+                .sum();
+    }
+
 }

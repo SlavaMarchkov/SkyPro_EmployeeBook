@@ -12,11 +12,7 @@ import java.util.*;
 public class EmployeeServiceImpl implements EmployeeService {
     private final List<Employee> employees = new ArrayList<>();
     private static final int LIMIT = 10;
-    private ValidatorService validatorService;
-
-    public EmployeeServiceImpl() {
-
-    }
+    private final ValidatorService validatorService;
 
     public EmployeeServiceImpl(final ValidatorService validatorService) {
         this.validatorService = validatorService;
@@ -29,10 +25,8 @@ public class EmployeeServiceImpl implements EmployeeService {
                                 int departmentId
     ) {
         Employee employee = new Employee(
-//                validatorService.validateName(firstName),
-//                validatorService.validateSurname(lastName),
-                firstName,
-                lastName,
+                validatorService.validateName(firstName),
+                validatorService.validateSurname(lastName),
                 salary,
                 departmentId
         );
@@ -107,7 +101,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .stream()
                 .max(Comparator.comparingInt(Employee::getSalary));
 
-        return employee.orElseThrow(() -> new RuntimeException("Employee with max salary not found"));
+        return employee.orElseThrow(() -> new EmployeeNotFoundException("Employee with max salary not found"));
     }
 
     @Override
@@ -120,7 +114,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .stream()
                 .min(Comparator.comparingInt(Employee::getSalary));
 
-        return employee.orElseThrow(() -> new RuntimeException("Employee with min salary not found"));
+        return employee.orElseThrow(() -> new EmployeeNotFoundException("Employee with min salary not found"));
     }
 
 }

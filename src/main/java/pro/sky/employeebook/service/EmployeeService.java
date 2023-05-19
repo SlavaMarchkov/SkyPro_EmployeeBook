@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 public interface EmployeeService {
+
     Employee addEmployee(String firstName, String lastName, int salary, int departmentId);
 
     Employee removeEmployee(String firstName, String lastName);
@@ -23,4 +24,5 @@ public interface EmployeeService {
     Employee setSalary(String firstName, String lastName, int salary);
 
     int calcTotalMonthlySalary();
+
 }

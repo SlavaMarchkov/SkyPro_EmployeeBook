@@ -10,13 +10,16 @@ import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    private final List<Employee> employees;
+    private final List<Employee> employees = new ArrayList<>();
     private static final int LIMIT = 10;
-    private final ValidatorService validatorService;
+    private ValidatorService validatorService;
+
+    public EmployeeServiceImpl() {
+
+    }
 
     public EmployeeServiceImpl(final ValidatorService validatorService) {
         this.validatorService = validatorService;
-        this.employees = new ArrayList<>();
     }
 
     @Override
@@ -26,8 +29,10 @@ public class EmployeeServiceImpl implements EmployeeService {
                                 int departmentId
     ) {
         Employee employee = new Employee(
-                validatorService.validateName(firstName),
-                validatorService.validateSurname(lastName),
+//                validatorService.validateName(firstName),
+//                validatorService.validateSurname(lastName),
+                firstName,
+                lastName,
                 salary,
                 departmentId
         );

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 import pro.sky.employeebook.model.Employee;
 import pro.sky.employeebook.service.DepartmentService;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -25,11 +24,11 @@ public class DepartmentController {
 
     @GetMapping(value = "/employees")
     public Map<Integer, List<Employee>> getAllEmployees() {
-        return service.getAllEmployees();
+        return service.employeesGroupedByDepartment();
     }
 
     @GetMapping(value = "/{id}/employees")
-    public Collection<Employee> getAllEmployeesByDepartment(@PathVariable(value = "id") Integer id) {
+    public List<Employee> getAllEmployeesByDepartment(@PathVariable(value = "id") Integer id) {
         return service.getAllEmployeesByDepartment(id);
     }
 

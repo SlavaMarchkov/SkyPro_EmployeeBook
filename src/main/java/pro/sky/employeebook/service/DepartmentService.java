@@ -2,7 +2,6 @@ package pro.sky.employeebook.service;
 
 import pro.sky.employeebook.model.Employee;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -12,9 +11,9 @@ public interface DepartmentService {
 
     Number getMinSalary(int departmentId);
 
-    Collection<Employee> getAllEmployeesByDepartment(int departmentId);
+    List<Employee> getAllEmployeesByDepartment(int departmentId);
 
-    Map<Integer, List<Employee>> getAllEmployees();
+    Map<Integer, List<Employee>> employeesGroupedByDepartment();
 
     Number calcTotalSalaryByDepartment(int departmentId);
 

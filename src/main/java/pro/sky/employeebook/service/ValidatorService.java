@@ -9,7 +9,7 @@ import pro.sky.employeebook.exception.InvalidSurnameException;
 public class ValidatorService {
 
     public String validateName(final String name) {
-        if (!StringUtils.isAlpha(name)) {
+        if (!StringUtils.isAlphanumericSpace(name)) {
             throw new InvalidNameException(name);
         }
         return StringUtils.capitalize(name.toLowerCase());
@@ -19,7 +19,7 @@ public class ValidatorService {
         // Мамин-Сибиряк
         String[] surnames = surname.split("-");
         for (int i = 0; i < surnames.length; i++) {
-            if (!StringUtils.isAlpha(surnames[i])) {
+            if (!StringUtils.isAlphanumericSpace(surnames[i])) {
                 throw new InvalidSurnameException(surname);
             }
             surnames[i] = StringUtils.capitalize(surnames[i].toLowerCase());

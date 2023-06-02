@@ -52,7 +52,7 @@ public class Employee {
                 ", lastName='" + lastName + '\'' +
                 ", salary=" + salary +
                 ", departmentId=" + departmentId +
-                '}';
+                "}";
     }
 
     @Override

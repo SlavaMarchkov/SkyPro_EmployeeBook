@@ -10,6 +10,7 @@ import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
+
     private final List<Employee> employees = new ArrayList<>();
     private static final int LIMIT = 10;
     private final ValidatorService validatorService;
@@ -68,7 +69,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     public List<Employee> getEmployees() {
-        return employees;
+        return new ArrayList<>(employees);
     }
 
     @Override
